@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package cnpj;
+
+option go_package = "./proto/gen";
+
+service CnpjService {
+    rpc GetCnpjInfo(CnpjRequest) returns (CnpjResponse) {}
+}
+
+message CnpjResponse {
+    string uf = 1;
+    string cep = 2;
+    string natureza_juridica = 3;
+    string descricao_situacao_cadastral = 4;
+    string cnpj = 5;
+    string cnae_fiscal_descricao = 6;
+}
+
+message CnpjRequest {
+    string cnpj = 1;
+}

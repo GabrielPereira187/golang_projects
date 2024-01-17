@@ -36,6 +36,8 @@ func DeletePerson(context *fiber.Ctx) error{
 	}
 	utils.ReturnJson("person deleted successfully", context, id)
 
+	CloseConnection(repository)
+
 	return nil
 }
 
@@ -67,6 +69,8 @@ func UpdatePerson(context *fiber.Ctx) error {
 	
 	utils.ReturnJson("updated succesfully", context, personToUpdate)
 
+	CloseConnection(repository)
+
 	return nil
 }
 
@@ -89,6 +93,8 @@ func GetPerson(context *fiber.Ctx) error {
 
 	utils.ReturnJson("person id fetched successfully", context, personModel)
 
+	CloseConnection(repository)
+
 	return nil
 }
 
@@ -110,6 +116,8 @@ func AddPerson(context *fiber.Ctx) error {
 
 	utils.ReturnJson("person has been added", context, person)
 
+	CloseConnection(repository)
+
 	return nil
 }
 
@@ -124,6 +132,8 @@ func GetPeople(context *fiber.Ctx) error{
 	}
 
 	utils.ReturnJson("people fetched succesfully", context, personModels)
+
+	CloseConnection(repository)
 
 	return nil
 }
@@ -156,5 +166,19 @@ func OpenConnection() Repository{
 		DB: db,
 	}
 
+	CloseConnection(repository)
+
 	return repository
 }
+
+func CloseConnection(repository Repository) {
+	sqlDB, err := repository.DB.DB();
+
+	if(err != nil) {
+		log.Fatal("connection failed to close")
+	}
+
+	sqlDB.Close()
+
+}
+
